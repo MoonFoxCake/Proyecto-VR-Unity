@@ -15,6 +15,8 @@ public class OpcionMenu
     public IconoMenu icono = IconoMenu.Sol;
     [Tooltip("Opcional. Si se asigna, reemplaza al icono incluido.")]
     public Sprite iconoPersonalizado;
+    [Tooltip("Opcional. Muestra esta textura dentro del boton (vista previa de un material).")]
+    public Texture2D iconoTextura;
     [Tooltip("Nombre de otra pagina que se abre al elegir esta opcion. Vacio = ninguna.")]
     public string abrirPagina = "";
     [Tooltip("Cierra el menu despues de elegir (si no abre otra pagina).")]
@@ -22,12 +24,24 @@ public class OpcionMenu
     public UnityEvent alElegir = new UnityEvent();
 }
 
-/// <summary>Un circulo de opciones. La primera pagina de la lista es la principal.</summary>
+public enum TipoPagina { Opciones, SelectorColor }
+
+[Serializable]
+public class EventoColor : UnityEvent<Color> { }
+
+/// <summary>Un circulo de opciones (o un selector de color). La primera pagina de la lista es la principal.</summary>
 [Serializable]
 public class PaginaMenu
 {
     public string nombre = "Principal";
+    [Tooltip("Opciones = ruedita de botones. Selector Color = rueda de color + barra de brillo.")]
+    public TipoPagina tipo = TipoPagina.Opciones;
     public List<OpcionMenu> opciones = new List<OpcionMenu>();
+
+    [Header("Solo para Selector Color")]
+    public Color colorInicial = Color.white;
+    [Tooltip("Se ejecuta cada vez que el usuario elige o arrastra un color.")]
+    public EventoColor alCambiarColor = new EventoColor();
 }
 
 /// <summary>
@@ -219,6 +233,20 @@ public class RadialMenu : MonoBehaviour
             rt.sizeDelta = Vector2.zero;
             contenedores[pagina.nombre] = cont;
 
+            bool principal = pagina == paginas[0];
+
+            if (pagina.tipo == TipoPagina.SelectorColor)
+            {
+                // Rueda arriba, barra de brillo abajo y boton Atras al pie (todo dentro del circulo).
+                var pag = pagina;
+                var selector = SelectorColorRadial.Crear(rt, new Vector2(0f, 90f), 520f,
+                    new Vector2(0f, -255f), new Vector2(520f, 64f), pag.colorInicial);
+                selector.ColorCambiado += c => pag.alCambiarColor.Invoke(c);
+                CrearBoton(rt, "Atras", RadialMenuIcons.Get(IconoMenu.Atras), null,
+                    new Vector2(0f, -385f), TamBoton * 0.55f, principal ? (UnityAction)Cerrar : Atras);
+                continue;
+            }
+
             int n = Mathf.Max(1, pagina.opciones.Count);
             for (int i = 0; i < pagina.opciones.Count; i++)
             {
@@ -226,11 +254,10 @@ public class RadialMenu : MonoBehaviour
                 float ang = (90f - i * 360f / n) * Mathf.Deg2Rad; // empieza arriba, sentido horario
                 var pos = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * RadioOpciones;
                 var icono = op.iconoPersonalizado != null ? op.iconoPersonalizado : RadialMenuIcons.Get(op.icono);
-                CrearBoton(rt, op.texto, icono, op.texto, pos, TamBoton, () => Elegir(op));
+                CrearBoton(rt, op.texto, icono, op.texto, pos, TamBoton, () => Elegir(op), op.iconoTextura);
             }
 
             // Centro: Cerrar en la principal, Atras en las demas.
-            bool principal = pagina == paginas[0];
             CrearBoton(rt, principal ? "Cerrar" : "Atras",
                 RadialMenuIcons.Get(principal ? IconoMenu.Cerrar : IconoMenu.Atras),
                 null, Vector2.zero, TamBoton * 0.7f, principal ? (UnityAction)Cerrar : Atras);
@@ -244,7 +271,8 @@ public class RadialMenu : MonoBehaviour
         else if (op.cerrarAlElegir) Cerrar();
     }
 
-    void CrearBoton(RectTransform padre, string nombre, Sprite icono, string texto, Vector2 pos, float tam, UnityAction accion)
+    void CrearBoton(RectTransform padre, string nombre, Sprite icono, string texto, Vector2 pos, float tam,
+        UnityAction accion, Texture textura = null)
     {
         var img = CrearImagen(padre, "Boton " + nombre, RadialMenuIcons.Circulo, Color.white, tam);
         ((RectTransform)img.transform).anchoredPosition = pos;
@@ -262,7 +290,22 @@ public class RadialMenu : MonoBehaviour
         boton.onClick.AddListener(accion);
 
         bool conTexto = !string.IsNullOrEmpty(texto);
-        if (icono != null)
+        if (textura != null)
+        {
+            // Vista previa redonda de la textura (mascara circular).
+            var mascara = CrearImagen((RectTransform)img.transform, "Mascara", RadialMenuIcons.Circulo, Color.white, tam * 0.5f);
+            mascara.raycastTarget = false;
+            ((RectTransform)mascara.transform).anchoredPosition = new Vector2(0f, conTexto ? tam * 0.1f : 0f);
+            mascara.gameObject.AddComponent<Mask>().showMaskGraphic = false;
+            var raw = new GameObject("Textura", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            var rrt = (RectTransform)raw.transform;
+            rrt.SetParent(mascara.transform, false);
+            rrt.sizeDelta = new Vector2(tam * 0.5f, tam * 0.5f);
+            raw.texture = textura;
+            raw.uvRect = new Rect(0f, 0f, 0.5f, 0.5f); // un acercamiento, para que se vea el detalle
+            raw.raycastTarget = false;
+        }
+        else if (icono != null)
         {
             var ic = CrearImagen((RectTransform)img.transform, "Icono", icono, colorIcono, tam * (conTexto ? 0.45f : 0.5f));
             ic.raycastTarget = false;

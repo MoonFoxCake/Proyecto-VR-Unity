@@ -8,7 +8,8 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 /// <summary>
 /// Menu: Tools > VR > Menu radial > Crear menu radial (Dia / Noche)
 /// Monta en la escena abierta: el Ciclo Dia Noche (usa la Directional Light
-/// como sol), un cielo procedural, el control de la lluvia (Particulas_Lluvia)
+/// como sol), un cielo procedural, el control de la lluvia (Particulas_Lluvia),
+/// el control de paredes (texturas + color de los objetos con tag Paredes)
 /// y el Menu Radial con todo conectado. Se puede ejecutar de nuevo para
 /// reemplazar el menu.
 /// </summary>
@@ -18,7 +19,11 @@ public static class MenuRadialSetup
     const string CicloName = "Ciclo Dia Noche";
     const string LluviaControlName = "Control Lluvia";
     const string LluviaName = "Particulas_Lluvia";
+    const string ParedesControlName = "Control Paredes";
     const string PaginaDiaNoche = "Dia y Noche";
+    const string PaginaParedes = "Paredes";
+    const string PaginaColorParedes = "Color de paredes";
+    const string MaterialParedesPath = "Assets/Materials/Paredes_Base.mat";
     const string CieloPath = "Assets/Materials/Cielo_Procedural.mat";
 
     [MenuItem("Tools/VR/Menu radial/Crear menu radial (Dia - Noche)")]
@@ -39,6 +44,9 @@ public static class MenuRadialSetup
         principal.opciones.Add(new OpcionMenu { texto = "Dia / Noche", icono = IconoMenu.Sol, abrirPagina = PaginaDiaNoche });
         var lluvia = CrearControlLluvia();
         if (lluvia != null) principal.opciones.Add(Opcion("Lluvia", IconoMenu.Lluvia, lluvia.AlternarLluvia));
+        var paredes = CrearControlParedes();
+        if (paredes != null)
+            principal.opciones.Add(new OpcionMenu { texto = "Paredes", icono = IconoMenu.Pared, abrirPagina = PaginaParedes });
 
         var diaNoche = new PaginaMenu { nombre = PaginaDiaNoche };
         diaNoche.opciones.Add(Opcion("Amanecer", IconoMenu.Amanecer, ciclo.IrAAmanecer));
@@ -49,6 +57,31 @@ public static class MenuRadialSetup
         menu.paginas.Clear();
         menu.paginas.Add(principal);
         menu.paginas.Add(diaNoche);
+
+        if (paredes != null)
+        {
+            var pagParedes = new PaginaMenu { nombre = PaginaParedes };
+            for (int i = 0; i < paredes.texturas.Length; i++)
+            {
+                var op = new OpcionMenu { texto = TexturasParedes.Nombres[i], icono = IconoMenu.Pared, iconoTextura = paredes.texturas[i] };
+                UnityEventTools.AddIntPersistentListener(op.alElegir, paredes.UsarTextura, i);
+                pagParedes.opciones.Add(op);
+            }
+            pagParedes.opciones.Add(Opcion("Liso", IconoMenu.Liso, paredes.QuitarTextura));
+            pagParedes.opciones.Add(new OpcionMenu { texto = "Color", icono = IconoMenu.RuedaColor, abrirPagina = PaginaColorParedes });
+            pagParedes.opciones.Add(Opcion("Original", IconoMenu.Restaurar, paredes.Restaurar));
+
+            var pagColor = new PaginaMenu
+            {
+                nombre = PaginaColorParedes,
+                tipo = TipoPagina.SelectorColor,
+                colorInicial = new Color(0.93f, 0.9f, 0.84f),
+            };
+            UnityEventTools.AddPersistentListener(pagColor.alCambiarColor, paredes.SetColor);
+
+            menu.paginas.Add(pagParedes);
+            menu.paginas.Add(pagColor);
+        }
         EditorUtility.SetDirty(menu);
 
         if (Object.FindAnyObjectByType<XRUIInputModule>() == null)
@@ -103,6 +136,46 @@ public static class MenuRadialSetup
         control = go.AddComponent<LluviaControl>();
         control.lluvia = particulas;
         control.lloviendoAlIniciar = false;
+        EditorUtility.SetDirty(control);
+        return control;
+    }
+
+    static ParedesControl CrearControlParedes()
+    {
+        var control = Object.FindAnyObjectByType<ParedesControl>();
+        if (control == null)
+        {
+            var go = new GameObject(ParedesControlName);
+            Undo.RegisterCreatedObjectUndo(go, "Crear control de paredes");
+            control = go.AddComponent<ParedesControl>();
+        }
+        Undo.RecordObject(control, "Configurar control de paredes");
+
+        // Los muros se buscan por tag en toda la escena; antes se limitaba a "Maqueta"
+        // (la miniatura) y no se pintaba el edificio a escala real.
+        control.tagParedes = "Paredes";
+        control.modelo = null;
+
+        var texturas = TexturasParedes.Generar(false, out var grises);
+        if (control.texturas == null || control.texturas.Length != texturas.Length) control.texturas = new Texture2D[texturas.Length];
+        if (control.texturasParaTenir == null || control.texturasParaTenir.Length != grises.Length) control.texturasParaTenir = new Texture2D[grises.Length];
+        for (int i = 0; i < texturas.Length; i++)
+        {
+            if (control.texturas[i] == null) control.texturas[i] = texturas[i];
+            if (control.texturasParaTenir[i] == null) control.texturasParaTenir[i] = grises[i];
+        }
+
+        if (control.materialBase == null)
+        {
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(MaterialParedesPath);
+            if (mat == null)
+            {
+                mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                mat.SetFloat("_Smoothness", 0.1f); // pared mate
+                AssetDatabase.CreateAsset(mat, MaterialParedesPath);
+            }
+            control.materialBase = mat;
+        }
         EditorUtility.SetDirty(control);
         return control;
     }

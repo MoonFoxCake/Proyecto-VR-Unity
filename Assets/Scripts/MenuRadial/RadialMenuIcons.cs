@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Iconos incluidos que el menu radial dibuja solo (no hacen falta imagenes).</summary>
-public enum IconoMenu { Ninguno, Sol, Luna, Amanecer, Atardecer, Reloj, Atras, Cerrar, Lluvia }
+public enum IconoMenu { Ninguno, Sol, Luna, Amanecer, Atardecer, Reloj, Atras, Cerrar, Lluvia, Pared, RuedaColor, Restaurar, Liso }
 
 /// <summary>
 /// Genera en tiempo de ejecucion los sprites del menu radial: el circulo de
@@ -12,13 +12,54 @@ public static class RadialMenuIcons
 {
     const int Size = 128;
     static readonly Dictionary<IconoMenu, Sprite> cache = new Dictionary<IconoMenu, Sprite>();
-    static Sprite circulo;
+    static Sprite circulo, aro, degradado, ruedaDeColor;
 
     public static Sprite Circulo => circulo != null ? circulo : circulo = Dibujar((x, y) => Disco(x, y, 0f, 0f, 0.98f));
+    public static Sprite Aro => aro != null ? aro : aro = Dibujar((x, y) => Anillo(x, y, 0.8f, 0.3f));
+
+    /// <summary>Degradado horizontal de negro a blanco (se tine con Image.color).</summary>
+    public static Sprite Degradado
+    {
+        get
+        {
+            if (degradado != null) return degradado;
+            const int w = 256;
+            var tex = new Texture2D(w, 1, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+            for (int i = 0; i < w; i++) { float g = i / (w - 1f); tex.SetPixel(i, 0, new Color(g, g, g, 1f)); }
+            tex.Apply();
+            return degradado = Sprite.Create(tex, new Rect(0, 0, w, 1), new Vector2(0.5f, 0.5f), w);
+        }
+    }
+
+    /// <summary>Rueda de color: tono segun el angulo, saturacion segun la distancia al centro.</summary>
+    public static Sprite RuedaDeColor
+    {
+        get
+        {
+            if (ruedaDeColor != null) return ruedaDeColor;
+            const int n = 256;
+            var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+            var px = new Color32[n * n];
+            for (int j = 0; j < n; j++)
+            for (int i = 0; i < n; i++)
+            {
+                float x = (i + 0.5f) / n * 2f - 1f, y = (j + 0.5f) / n * 2f - 1f;
+                float r = Mathf.Sqrt(x * x + y * y);
+                float h = Mathf.Repeat(Mathf.Atan2(y, x) / (2f * Mathf.PI), 1f);
+                var c = Color.HSVToRGB(h, Mathf.Clamp01(r), 1f);
+                c.a = Mathf.Clamp01((1f - r) * n * 0.5f + 0.5f);
+                px[j * n + i] = c;
+            }
+            tex.SetPixels32(px);
+            tex.Apply();
+            return ruedaDeColor = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), n);
+        }
+    }
 
     public static Sprite Get(IconoMenu icono)
     {
         if (icono == IconoMenu.Ninguno) return null;
+        if (icono == IconoMenu.RuedaColor) return RuedaDeColor;
         if (cache.TryGetValue(icono, out var s) && s != null) return s;
         s = Dibujar(Forma(icono));
         cache[icono] = s;
@@ -64,6 +105,34 @@ public static class RadialMenuIcons
                         Barra(x, y, 0.45f, -0.25f, 0.33f, -0.55f, 0.06f),
                         Barra(x, y, -0.15f, -0.65f, -0.25f, -0.9f, 0.06f),
                         Barra(x, y, 0.25f, -0.65f, 0.15f, -0.9f, 0.06f)));
+            case IconoMenu.Pared:
+                return (x, y) =>
+                {
+                    float v = Mathf.Max(
+                        Barra(x, y, -0.85f, -0.7f, 0.85f, -0.7f, 0.06f), Barra(x, y, -0.85f, 0.7f, 0.85f, 0.7f, 0.06f),
+                        Barra(x, y, -0.85f, -0.7f, -0.85f, 0.7f, 0.06f), Barra(x, y, 0.85f, -0.7f, 0.85f, 0.7f, 0.06f),
+                        Barra(x, y, -0.85f, -0.233f, 0.85f, -0.233f, 0.06f), Barra(x, y, -0.85f, 0.233f, 0.85f, 0.233f, 0.06f));
+                    // juntas verticales alternadas, como ladrillos
+                    v = Mathf.Max(v, Barra(x, y, -0.28f, 0.233f, -0.28f, 0.7f, 0.06f), Barra(x, y, 0.28f, 0.233f, 0.28f, 0.7f, 0.06f));
+                    v = Mathf.Max(v, Barra(x, y, 0f, -0.233f, 0f, 0.233f, 0.06f));
+                    v = Mathf.Max(v, Barra(x, y, -0.28f, -0.7f, -0.28f, -0.233f, 0.06f), Barra(x, y, 0.28f, -0.7f, 0.28f, -0.233f, 0.06f));
+                    return v;
+                };
+            case IconoMenu.Restaurar:
+                return (x, y) =>
+                {
+                    // Flecha circular abierta a la derecha (deshacer / volver al original).
+                    float ang = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
+                    float arco = ang > -50f && ang < 35f ? 0f : Anillo(x, y, 0.62f, 0.16f);
+                    float ax = 0.62f * Mathf.Cos(35f * Mathf.Deg2Rad), ay = 0.62f * Mathf.Sin(35f * Mathf.Deg2Rad);
+                    float punta = Mathf.Max(Barra(x, y, ax, ay, ax - 0.32f, ay + 0.05f, 0.08f),
+                                            Barra(x, y, ax, ay, ax + 0.02f, ay + 0.33f, 0.08f));
+                    return Mathf.Max(arco, punta);
+                };
+            case IconoMenu.Liso:
+                // Cuadro relleno: pared sin textura.
+                return (x, y) => Mathf.Min(Mathf.Clamp01((0.68f - Mathf.Abs(x)) / Aa + 0.5f),
+                                           Mathf.Clamp01((0.68f - Mathf.Abs(y)) / Aa + 0.5f));
             default:
                 return (x, y) => 0f;
         }
