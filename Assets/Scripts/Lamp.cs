@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteAlways]
 public class Lamp : MonoBehaviour
 {
     [Header("Light")]
@@ -23,8 +24,12 @@ public class Lamp : MonoBehaviour
         Apply();
     }
 
+    [ContextMenu("Test Cycle")]
+    
+
     public void CycleBrightness()
     {
+        Debug.Log("Test Cycle was clicked! Moving to step: " + currentStep);
         currentStep = (currentStep + 1) % intensitySteps.Length;
         Apply();
     }
