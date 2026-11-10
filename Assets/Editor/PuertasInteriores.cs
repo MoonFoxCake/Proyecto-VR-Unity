@@ -110,7 +110,7 @@ public static class PuertasInteriores
         var box = Undo.AddComponent<BoxCollider>(goCol);
         box.size = new Vector3(d.largo, d.alto, Mathf.Max(d.grosor, 0.06f / sc.x));
 
-        var inter = Undo.AddComponent<XRSimpleInteractable>(goHoja);
+        var inter = Undo.AddComponent<AgarrePuerta>(goHoja);
 
         var pi = Undo.AddComponent<PuertaInteractiva>(root);
         pi.bisagra = goBis.transform;
@@ -119,6 +119,9 @@ public static class PuertasInteriores
         pi.ladoLibreLocal = d.libre;
         pi.normalLocal = d.normal;
         pi.centroHojaLocal = d.centroCerrado;
+        pi.marco = goMarco.transform;
+        string como;
+        if (!pi.DetectarLadoApertura(out como)) msg = (msg != null ? msg + " " : "") + como;
         EditorUtility.SetDirty(pi);
 
         Undo.RecordObject(root, "Renombrar puerta");

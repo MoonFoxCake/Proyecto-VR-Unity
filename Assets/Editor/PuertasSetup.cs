@@ -71,6 +71,72 @@ public static class PuertasSetup
         EditorSceneManager.MarkSceneDirty(pi.gameObject.scene);
     }
 
+    [MenuItem("Tools/VR/Puertas/4. Actualizar puertas convertidas (agarre + lado de apertura)")]
+    static void DetectarTodas()
+    {
+        var puertas = Object.FindObjectsByType<PuertaInteractiva>(FindObjectsInactive.Include);
+        if (puertas.Length == 0) { EditorUtility.DisplayDialog("Puertas", "No hay puertas convertidas en la escena.", "OK"); return; }
+
+        Undo.IncrementCurrentGroup();
+        Undo.SetCurrentGroupName("Actualizar puertas");
+        int grupoUndo = Undo.GetCurrentGroup();
+        int ok = 0, agarres = 0;
+        var dudas = new StringBuilder();
+        foreach (var pi in puertas)
+        {
+            Undo.RecordObject(pi, "Actualizar puertas");
+            if (ActualizarAgarre(pi)) agarres++;
+            if (pi.marco == null) pi.marco = pi.transform.Find("Marco");
+            string como;
+            bool bien = pi.DetectarLadoApertura(out como);
+            Debug.Log("[Puertas] " + pi.name + ": abre hacia " + pi.aperturaLocal + " " + como, pi);
+            if (bien) ok++; else dudas.AppendLine("- " + pi.name + ": " + como);
+            EditorUtility.SetDirty(pi);
+        }
+        Undo.CollapseUndoOperations(grupoUndo);
+        EditorSceneManager.MarkSceneDirty(puertas[0].gameObject.scene);
+
+        string texto = "Puertas: " + puertas.Length + ". Agarre actualizado: " + agarres +
+                       ". Lado de apertura seguro: " + ok + " de " + puertas.Length + ".\n\nGuarda la escena (Ctrl+S).";
+        if (dudas.Length > 0) texto += "\n\nRevisar a mano (selecciona la puerta y mira el arco en la escena):\n" + dudas;
+        Debug.Log("[Puertas] " + texto.Replace("\n", " "));
+        EditorUtility.DisplayDialog("Puertas", texto, "OK");
+    }
+
+    // Cambia el XRSimpleInteractable de la hoja por AgarrePuerta (el rayo sigue a la puerta).
+    static bool ActualizarAgarre(PuertaInteractiva pi)
+    {
+        var viejo = pi.interactable;
+        if (viejo == null && pi.hoja != null) viejo = pi.hoja.GetComponent<XRSimpleInteractable>();
+        if (viejo == null || viejo is AgarrePuerta) return false;
+
+        var go = viejo.gameObject;
+        var capas = viejo.interactionLayers;
+        var modo = viejo.selectMode;
+        var distancia = viejo.distanceCalculationMode;
+        Undo.DestroyObjectImmediate(viejo);
+        var nuevo = Undo.AddComponent<AgarrePuerta>(go);
+        nuevo.interactionLayers = capas;
+        nuevo.selectMode = modo;
+        nuevo.distanceCalculationMode = distancia;
+        pi.interactable = nuevo;
+        EditorUtility.SetDirty(nuevo);
+        return true;
+    }
+
+    [MenuItem("Tools/VR/Puertas/5. Invertir lado de apertura de la puerta seleccionada")]
+    static void InvertirApertura()
+    {
+        var go = Selection.activeGameObject;
+        var pi = go != null ? go.GetComponentInParent<PuertaInteractiva>() : null;
+        if (pi == null) { EditorUtility.DisplayDialog("Puertas", "Selecciona una puerta ya convertida (o una parte de ella).", "OK"); return; }
+        Undo.RecordObject(pi, "Invertir lado de apertura");
+        pi.aperturaLocal = pi.aperturaLocal.sqrMagnitude > 0.5f ? -pi.aperturaLocal : -pi.normalLocal.normalized;
+        EditorUtility.SetDirty(pi);
+        EditorSceneManager.MarkSceneDirty(pi.gameObject.scene);
+        SceneView.RepaintAll();
+    }
+
     // ------------------------------------------------------------ proceso
 
     internal static void Procesar(List<GameObject> lista)
@@ -267,7 +333,7 @@ public static class PuertasSetup
         Vector3 tam = hoja.b.size;
         tam[tAxis] = Mathf.Max(tam[tAxis], 0.06f / sc[tAxis]);
         box.size = tam;
-        var inter = Undo.AddComponent<XRSimpleInteractable>(goHoja);
+        var inter = Undo.AddComponent<AgarrePuerta>(goHoja);
 
         var pi = Undo.AddComponent<PuertaInteractiva>(root);
         pi.bisagra = goBis.transform;
@@ -276,6 +342,9 @@ public static class PuertasSetup
         pi.ladoLibreLocal = libre;
         pi.normalLocal = normal;
         pi.centroHojaLocal = hoja.b.center;
+        pi.marco = goMarco.transform;
+        string como;
+        if (!pi.DetectarLadoApertura(out como)) msg = (msg != null ? msg + " " : "") + como;
         EditorUtility.SetDirty(pi);
 
         Undo.RecordObject(root, "Renombrar puerta");
