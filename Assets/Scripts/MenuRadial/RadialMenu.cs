@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
@@ -45,8 +46,9 @@ public class PaginaMenu
 }
 
 /// <summary>
-/// Menu radial (ruedita) que aparece frente al usuario al apretar el boton A
-/// del control derecho, y se cierra al apretarlo otra vez.
+/// Menu radial (ruedita) que aparece frente al usuario al apretar el boton B
+/// del control derecho, y se cierra al apretarlo otra vez. (A queda para saltar.)
+/// Si esa mano sostiene el medidor, B cambia el modo del medidor y no abre el menu.
 /// La interfaz se construye sola al iniciar: solo hay que llenar las paginas
 /// y opciones en el Inspector. Cada opcion puede ejecutar acciones (Al Elegir)
 /// y/o abrir otra pagina.
@@ -58,7 +60,7 @@ public class RadialMenu : MonoBehaviour
     public List<PaginaMenu> paginas = new List<PaginaMenu> { new PaginaMenu() };
 
     [Header("Abrir / cerrar")]
-    [Tooltip("Boton que abre y cierra el menu. Por defecto: A del control derecho (y M en el teclado para probar).")]
+    [Tooltip("Boton que abre y cierra el menu. Por defecto: B del control derecho (y M en el teclado para probar).")]
     public InputActionProperty botonAbrir = new InputActionProperty(CrearAccionPorDefecto());
     [Tooltip("Vacio = Camera.main (la camara del XR Origin).")]
     public Transform cabeza;
@@ -96,7 +98,7 @@ public class RadialMenu : MonoBehaviour
     static InputAction CrearAccionPorDefecto()
     {
         var accion = new InputAction("Abrir menu", InputActionType.Button);
-        accion.AddBinding("<XRController>{RightHand}/primaryButton");
+        accion.AddBinding("<XRController>{RightHand}/secondaryButton"); // B (A es saltar)
         accion.AddBinding("<Keyboard>/m");
         return accion;
     }
@@ -123,7 +125,17 @@ public class RadialMenu : MonoBehaviour
         if (botonAbrir.reference == null) accion.Disable();
     }
 
-    void OnBotonAbrir(InputAction.CallbackContext _) => Alternar();
+    void OnBotonAbrir(InputAction.CallbackContext ctx)
+    {
+        // Si esa mano sostiene el medidor, su B/Y cambia el modo del medidor, no abre el menu.
+        var dispositivo = ctx.control != null ? ctx.control.device : null;
+        if (dispositivo != null)
+        {
+            if (dispositivo.usages.Contains(UnityEngine.InputSystem.CommonUsages.RightHand) && TapeMeasure.SostenidoConMano(derecha: true)) return;
+            if (dispositivo.usages.Contains(UnityEngine.InputSystem.CommonUsages.LeftHand) && TapeMeasure.SostenidoConMano(derecha: false)) return;
+        }
+        Alternar();
+    }
 
     void Update()
     {
