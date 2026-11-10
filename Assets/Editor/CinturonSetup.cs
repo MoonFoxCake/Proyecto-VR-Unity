@@ -41,10 +41,6 @@ public static class CinturonSetup
             if (oldTools != null) Undo.DestroyObjectImmediate(oldTools);
         }
 
-        // Referencia de escala: el objeto que lleva la escala de la maqueta.
-        var casa = GameObject.Find("Casa_Modelo");
-        if (casa == null) casa = GameObject.Find("Maqueta");
-
         // Materiales
         var matBelt = MakeMat("Cinturon_Base", new Color(0.12f, 0.12f, 0.14f), false);
         var matBody = MakeMat("Herramienta_Cuerpo", new Color(0.85f, 0.85f, 0.88f), false);
@@ -66,7 +62,7 @@ public static class CinturonSetup
 
         // --- Ranura derecha: Medidor ---
         var slotTape = CreateSlot(belt.transform, "Slot_Medidor", new Vector3(0.28f, 0f, 0.03f), matBelt);
-        var tape = CreateTapeMeasure(tools.transform, start, matTape, matMark, matLine, casa != null ? casa.transform : null);
+        var tape = CreateTapeMeasure(tools.transform, start, matTape, matMark, matLine);
         BindToSlot(slotTape, tape);
 
         // --- Ranura izquierda: Linterna ---
@@ -131,7 +127,7 @@ public static class CinturonSetup
         return grab;
     }
 
-    static XRGrabInteractable CreateTapeMeasure(Transform parent, Vector3 pos, Material body, Material mark, Material line, Transform scaleRef)
+    static XRGrabInteractable CreateTapeMeasure(Transform parent, Vector3 pos, Material body, Material mark, Material line)
     {
         var grab = CreateToolRoot(parent, "Medidor", pos);
         var root = grab.transform;
@@ -156,7 +152,6 @@ public static class CinturonSetup
 
         var tm = root.gameObject.AddComponent<TapeMeasure>();
         tm.tip = tip.transform;
-        tm.scaleReference = scaleRef;
         tm.lineMaterial = line;
         tm.markerMaterial = mark;
         EditorUtility.SetDirty(tm);
