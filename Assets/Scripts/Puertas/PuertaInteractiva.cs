@@ -35,6 +35,8 @@ public class PuertaInteractiva : MonoBehaviour
     public Vector3 normalLocal = Vector3.forward;
     [Tooltip("Lado del marco hacia el que abre la puerta (+/- Normal Local). En cero = se detecta solo al iniciar.")]
     public Vector3 aperturaLocal = Vector3.zero;
+    [Tooltip("El lado lo eligio una herramienta (ventanas, portones) o se invirtio a mano: la deteccion automatica no lo cambia.")]
+    public bool ladoManual = false;
     [HideInInspector] public Vector3 centroHojaLocal;
 
     [Header("Apertura")]

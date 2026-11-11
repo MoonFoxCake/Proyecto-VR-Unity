@@ -87,6 +87,7 @@ public static class PuertasSetup
             Undo.RecordObject(pi, "Actualizar puertas");
             if (ActualizarAgarre(pi)) agarres++;
             if (pi.marco == null) pi.marco = pi.transform.Find("Marco");
+            if (pi.ladoManual) { ok++; EditorUtility.SetDirty(pi); continue; } // lado elegido a mano o por la herramienta
             string como;
             bool bien = pi.DetectarLadoApertura(out como);
             Debug.Log("[Puertas] " + pi.name + ": abre hacia " + pi.aperturaLocal + " " + como, pi);
@@ -127,14 +128,33 @@ public static class PuertasSetup
     [MenuItem("Tools/VR/Puertas/5. Invertir lado de apertura de la puerta seleccionada")]
     static void InvertirApertura()
     {
-        var go = Selection.activeGameObject;
-        var pi = go != null ? go.GetComponentInParent<PuertaInteractiva>() : null;
-        if (pi == null) { EditorUtility.DisplayDialog("Puertas", "Selecciona una puerta ya convertida (o una parte de ella).", "OK"); return; }
-        Undo.RecordObject(pi, "Invertir lado de apertura");
-        pi.aperturaLocal = pi.aperturaLocal.sqrMagnitude > 0.5f ? -pi.aperturaLocal : -pi.normalLocal.normalized;
-        EditorUtility.SetDirty(pi);
-        EditorSceneManager.MarkSceneDirty(pi.gameObject.scene);
+        // Sirve con: una hoja (o una parte de ella), una puerta, o una ventana/porton entero
+        // (sus dos hojas), y con varios objetos seleccionados a la vez.
+        var puertas = new HashSet<PuertaInteractiva>();
+        foreach (var go in Selection.gameObjects)
+        {
+            var arriba = go.GetComponentInParent<PuertaInteractiva>();
+            if (arriba != null) { puertas.Add(arriba); continue; }
+            foreach (var abajo in go.GetComponentsInChildren<PuertaInteractiva>(true)) puertas.Add(abajo);
+        }
+        if (puertas.Count == 0)
+        {
+            EditorUtility.DisplayDialog("Puertas", "Selecciona una puerta, ventana o porton ya convertido (o una parte de ellos).", "OK");
+            return;
+        }
+        Undo.RecordObjects(puertas.ToArray(), "Invertir lado de apertura");
+        foreach (var pi in puertas)
+        {
+            pi.aperturaLocal = pi.aperturaLocal.sqrMagnitude > 0.5f ? -pi.aperturaLocal : -pi.normalLocal.normalized;
+            pi.ladoManual = true; // que "4. Actualizar puertas" no lo vuelva a cambiar
+            EditorUtility.SetDirty(pi);
+        }
+        EditorSceneManager.MarkSceneDirty(puertas.First().gameObject.scene);
         SceneView.RepaintAll();
+        string nombres = string.Join("\n", puertas.Select(p => "- " + (p.transform.parent != null && p.name.StartsWith("Hoja ") ? p.transform.parent.name + " / " + p.name : p.name)));
+        Debug.Log("[Puertas] Lado de apertura invertido: " + nombres.Replace("\n", " "));
+        EditorUtility.DisplayDialog("Puertas", "Lado de apertura invertido (" + puertas.Count + "):\n" + nombres +
+            "\n\nSelecciona la hoja para ver el arco nuevo en la escena. Guarda la escena (Ctrl+S).", "OK");
     }
 
     // ------------------------------------------------------------ proceso
