@@ -73,7 +73,53 @@ public static class MaquetaSetup
         var modelo = GameObject.Find(NombreModelo);
         if (modelo == null) { Aviso("No encontre '" + NombreModelo + "' en la escena."); return; }
         var piezas = Piezas(modelo.transform, out int noLegibles);
-        Construir(Conjunto, modelo.transform, new List<List<Pieza>> { piezas }, noLegibles, "todo '" + modelo.name + "'");
+        int antes = piezas.Count;
+        piezas = SinInteriores(piezas);
+        Construir(Conjunto, modelo.transform, new List<List<Pieza>> { piezas }, noLegibles,
+                  "todo '" + modelo.name + "', sin interiores (" + (antes - piezas.Count) + " piezas quitadas)");
+    }
+
+    // A 1:50 los interiores no se ven (techos y muros los tapan) pero eran mas de la mitad de los
+    // triangulos. Una pieza es interior si:
+    //   - esta completa dentro de la huella de una casa (mas adentro que el grosor del muro exterior),
+    //   - es mas baja que 2.2 m y mas angosta que 3 m (mueble, artefacto, puerta interior), y
+    //   - no esta metida en el grosor de un muro (asi las ventanas y puertas de fachada se quedan;
+    //     un TV o un mueble pegado al muro esta SOBRE el muro, no dentro).
+    static List<Pieza> SinInteriores(List<Pieza> piezas)
+    {
+        // Huellas de las casas: losas del tamano de una casa, juntando las que se superponen.
+        var huellas = new List<Bounds>();
+        foreach (var q in piezas.Where(q => EsLosa(q.caja, 0.5f)))
+        {
+            int i = huellas.FindIndex(h => Superposicion(q.caja, h) > 0.5f);
+            if (i < 0) huellas.Add(q.caja);
+            else { var h = huellas[i]; h.Encapsulate(q.caja); huellas[i] = h; }
+        }
+        var muros = piezas.Where(q => q.caja.size.y >= 2.2f && Mathf.Min(q.caja.size.x, q.caja.size.z) <= 0.5f).Select(q => q.caja).ToList();
+
+        const float grosorMuro = 0.08f;
+        bool DentroDeCasa(Bounds b) => huellas.Any(h =>
+            b.min.x >= h.min.x + grosorMuro && b.max.x <= h.max.x - grosorMuro &&
+            b.min.z >= h.min.z + grosorMuro && b.max.z <= h.max.z - grosorMuro);
+
+        bool MetidaEnMuro(Bounds b)
+        {
+            foreach (var m in muros)
+            {
+                int fino = m.size.x < m.size.z ? 0 : 2, largo = 2 - fino;
+                if (b.min[fino] >= m.min[fino] - 0.08f && b.max[fino] <= m.max[fino] + 0.08f &&
+                    b.min[largo] >= m.min[largo] - 0.05f && b.max[largo] <= m.max[largo] + 0.05f &&
+                    b.min.y >= m.min.y - 0.05f && b.max.y <= m.max.y + 0.05f) return true;
+            }
+            return false;
+        }
+
+        return piezas.Where(q =>
+        {
+            Bounds b = q.caja;
+            bool interior = b.size.y < 2.2f && Mathf.Max(b.size.x, b.size.z) < 3f && DentroDeCasa(b) && !MetidaEnMuro(b);
+            return !interior;
+        }).ToList();
     }
 
     [MenuItem("Tools/VR/Maqueta/2. Crear maqueta de la casa seleccionada (gira)")]
