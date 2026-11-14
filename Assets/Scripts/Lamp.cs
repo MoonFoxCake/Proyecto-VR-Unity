@@ -1,54 +1,34 @@
 using UnityEngine;
 
-[ExecuteAlways]
 public class Lamp : MonoBehaviour
 {
-    [Header("Light")]
     [SerializeField] private Light lampLight;
+    [SerializeField] private float maxIntensity = 10f;
 
-    [Header("Brightness steps — index 0 is OFF")]
-    [SerializeField] private float[] intensitySteps = { 0f, 0.6f, 1.5f, 3f };
-    [SerializeField] private int startStep = 1;
+    [Header("Intensidad (0 = apagada, 1 = máxima)")]
+    [Range(0f, 1f)] [SerializeField] private float intensity01 = 0f;
 
-    private int currentStep;
+    private float lastOn = 0f;
 
-    private void Awake()
+    public float Normalized => intensity01;
+
+    private void Awake() => SetNormalized(intensity01);
+
+
+    private void OnValidate() => SetNormalized(intensity01);
+
+    public void SetNormalized(float t)
     {
-        currentStep = Mathf.Clamp(startStep, 0, intensitySteps.Length - 1);
-        Apply();
-    }
-
-    public void Toggle()
-    {
-        currentStep = (currentStep == 0) ? 1 : 0;
-        Apply();
-    }
-
-    [ContextMenu("Test Cycle")]
-    
-
-    public void CycleBrightness()
-    {
-        Debug.Log("Test Cycle was clicked! Moving to step: " + currentStep);
-        currentStep = (currentStep + 1) % intensitySteps.Length;
-        Apply();
-    }
-
-    public void Increase() => SetStep(currentStep + 1);
-    public void Decrease() => SetStep(currentStep - 1);
-
-    private void SetStep(int step)
-    {
-        currentStep = Mathf.Clamp(step, 0, intensitySteps.Length - 1);
-        Apply();
-    }
-
-    private void Apply()
-    {
+        intensity01 = Mathf.Clamp01(t);
+        if (intensity01 > 0.001f) lastOn = intensity01;
         if (lampLight == null) return;
 
-        float intensity = intensitySteps[currentStep];
-        lampLight.intensity = intensity;
-        lampLight.enabled = intensity > 0.0001f; 
+        lampLight.intensity = intensity01 * maxIntensity;
+        lampLight.enabled = intensity01 > 0.001f;
     }
+
+    public void Toggle() => SetNormalized(intensity01 > 0.001f ? 0f : lastOn);
+
+    [ContextMenu("Test Toggle")]
+    private void TestToggle() => Toggle();
 }
