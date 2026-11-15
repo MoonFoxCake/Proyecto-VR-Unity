@@ -1,11 +1,13 @@
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 /// <summary>
 /// Panel de información en World Space que aparece SIEMPRE frente al jugador.
 /// Un solo panel para todos los objetos. Si no asignas la UI, se crea uno
-/// por defecto automáticamente (fondo oscuro + título, descripción y datos).
+/// por defecto. Si hay una pared u objeto entre tú y el panel, el panel se
+/// acerca y se encoge (mismo tamaño aparente) para no atravesarlo.
 /// </summary>
 public class InfoPanel : MonoBehaviour
 {
@@ -29,10 +31,23 @@ public class InfoPanel : MonoBehaviour
     public bool followPlayer = false;
     public float followSpeed = 4f;
 
+    [Header("Evitar atravesar objetos")]
+    public bool avoidClipping = true;
+    [Tooltip("Capas que cuentan como obstáculo. Quita aquí las que no quieras (manos, etc.).")]
+    public LayerMask obstacleMask = ~0;
+    [Tooltip("Separación (m) que queda entre el panel y el obstáculo.")]
+    public float margin = 0.1f;
+    [Tooltip("Cuánto puede acercarse y encogerse el panel (0.4 = hasta el 40% de su distancia y tamaño).")]
+    [Range(0.2f, 1f)] public float minScaleFactor = 0.4f;
+    [Tooltip("Ignora los objetos que se pueden agarrar (herramientas, props).")]
+    public bool ignoreGrabbables = true;
+
     [Header("Apariencia")]
     public float scale = 0.002f;
 
     public InspectableObject Current { get; private set; }
+
+    static readonly RaycastHit[] hitBuffer = new RaycastHit[16];
 
     void Awake()
     {
@@ -57,7 +72,9 @@ public class InfoPanel : MonoBehaviour
             sb.AppendLine("<b>" + e.label + ":</b> " + e.value);
         characteristicsText.text = sb.ToString();
 
-        transform.position = GetTargetPosition();
+        ComputePlacement(out Vector3 pos, out float factor);
+        transform.position = pos;
+        transform.localScale = Vector3.one * (scale * factor);
         FaceHead();
 
         root.SetActive(true);
@@ -78,9 +95,12 @@ public class InfoPanel : MonoBehaviour
 
         if (followPlayer)
         {
+            ComputePlacement(out Vector3 pos, out float factor);
             float t = 1f - Mathf.Exp(-followSpeed * Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, GetTargetPosition(), t);
+            transform.position = Vector3.Lerp(transform.position, pos, t);
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * (scale * factor), t);
         }
+
         FaceHead();
     }
 
@@ -93,11 +113,9 @@ public class InfoPanel : MonoBehaviour
         return true;
     }
 
+    // Posición ideal frente al jugador, sin tener en cuenta obstáculos.
     Vector3 GetTargetPosition()
     {
-        if (!ResolveHead()) return transform.position;
-
-        // Dirección horizontal hacia donde mira el jugador (ignora inclinar la cabeza).
         Vector3 fwd = Vector3.ProjectOnPlane(head.forward, Vector3.up);
         if (fwd.sqrMagnitude < 0.04f)
         {
@@ -108,6 +126,64 @@ public class InfoPanel : MonoBehaviour
         Vector3 right = Vector3.Cross(Vector3.up, fwd);
 
         return head.position + fwd * distance + right * sideOffset + Vector3.up * heightOffset;
+    }
+
+    // Calcula posición final y factor de reducción (1 = sin obstáculos).
+    void ComputePlacement(out Vector3 pos, out float factor)
+    {
+        factor = 1f;
+        pos = transform.position;
+        if (!ResolveHead()) return;
+
+        Vector3 eye = head.position;
+        Vector3 target = GetTargetPosition();
+        pos = target;
+        if (!avoidClipping) return;
+
+        Vector3 flat = target - eye;
+        flat.y = 0f;
+        if (flat.sqrMagnitude < 0.0001f) return;
+
+        // Tamaño del panel en metros, y ejes para ubicar sus esquinas.
+        var rt = transform as RectTransform;
+        Vector2 size = (rt != null ? rt.rect.size : new Vector2(600f, 400f)) * scale;
+        Quaternion face = Quaternion.LookRotation(flat);
+        Vector3 halfRight = face * Vector3.right * (size.x * 0.5f);
+        Vector3 halfUp = Vector3.up * (size.y * 0.5f);
+
+        // 9 rayos desde los ojos hacia el panel (centro, esquinas y bordes).
+        for (int ix = -1; ix <= 1; ix++)
+        {
+            for (int iy = -1; iy <= 1; iy++)
+            {
+                Vector3 point = target + halfRight * ix + halfUp * iy;
+                Vector3 dir = point - eye;
+                float len = dir.magnitude;
+                if (len < 0.001f) continue;
+                dir /= len;
+
+                float hit = NearestObstacle(eye, dir, len);
+                if (hit < len)
+                    factor = Mathf.Min(factor, (hit - margin) / len);
+            }
+        }
+
+        factor = Mathf.Clamp(factor, minScaleFactor, 1f);
+        pos = eye + (target - eye) * factor;   // acercar al jugador
+    }
+
+    float NearestObstacle(Vector3 origin, Vector3 dir, float maxDist)
+    {
+        int n = Physics.RaycastNonAlloc(origin, dir, hitBuffer, maxDist,
+                                        obstacleMask, QueryTriggerInteraction.Ignore);
+        float best = maxDist;
+        for (int i = 0; i < n; i++)
+        {
+            Collider c = hitBuffer[i].collider;
+            if (ignoreGrabbables && c.GetComponentInParent<XRGrabInteractable>() != null) continue;
+            if (hitBuffer[i].distance < best) best = hitBuffer[i].distance;
+        }
+        return best;
     }
 
     void FaceHead()
