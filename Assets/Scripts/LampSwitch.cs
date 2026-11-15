@@ -9,17 +9,18 @@ public class LampSwitch : XRSimpleInteractable
     [SerializeField] private Lamp lamp;
 
     [Tooltip("Grados de giro de muñeca para ir de 0 a 100% de intensidad.")]
-    [SerializeField] private float degreesForFullRange = 120f;
+    [SerializeField] private float degreesForFullRange = 90f;
 
     [Tooltip("Si giras menos que esto, se considera un toque y hace toggle.")]
     [SerializeField] private float tapThreshold = 10f;
 
-    [Tooltip("Marca si quieres que girar hacia el otro lado suba la luz.")]
-    [SerializeField] private bool invert = false;
+    [Tooltip("Activado: girar en sentido horario sube la luz. Desactivado: antihorario.")]
+    [SerializeField] private bool invert = true;
 
     private IXRSelectInteractor holder;
     private Quaternion startRot;
     private float startNormalized;
+    private float dialOffset;
     private bool dialed;
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -31,6 +32,7 @@ public class LampSwitch : XRSimpleInteractable
         startRot = holder.GetAttachTransform(this).rotation;
         startNormalized = lamp.Normalized;
         dialed = false;
+        dialOffset = 0f;
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
@@ -51,10 +53,15 @@ public class LampSwitch : XRSimpleInteractable
         float roll = Twist(delta, Vector3.forward);
         if (invert) roll = -roll;
 
-        if (!dialed && Mathf.Abs(roll) > tapThreshold) dialed = true;
+        if (!dialed && Mathf.Abs(roll) > tapThreshold)
+        {
+            dialed = true;
+            // Guardamos el umbral para que el brillo arranque suave, sin salto.
+            dialOffset = Mathf.Sign(roll) * tapThreshold;
+        }
 
         if (dialed)
-            lamp.SetNormalized(startNormalized + roll / degreesForFullRange);
+            lamp.SetNormalized(startNormalized + (roll - dialOffset) / degreesForFullRange);
     }
 
     private static float Twist(Quaternion q, Vector3 axis)

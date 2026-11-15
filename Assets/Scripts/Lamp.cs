@@ -8,12 +8,15 @@ public class Lamp : MonoBehaviour
     [Header("Intensidad (0 = apagada, 1 = máxima)")]
     [Range(0f, 1f)] [SerializeField] private float intensity01 = 0f;
 
-    private float lastOn = 0f;
+    [Tooltip("Intensidad mínima a la que vuelve al encender con un toque.")]
+    [SerializeField] private float minRestoreIntensity = 0.3f;
+
+    // Antes empezaba en 0, por eso el primer toque no encendía nada.
+    private float lastOn = 1f;
 
     public float Normalized => intensity01;
 
     private void Awake() => SetNormalized(intensity01);
-
 
     private void OnValidate() => SetNormalized(intensity01);
 
@@ -27,7 +30,11 @@ public class Lamp : MonoBehaviour
         lampLight.enabled = intensity01 > 0.001f;
     }
 
-    public void Toggle() => SetNormalized(intensity01 > 0.001f ? 0f : lastOn);
+    public void Toggle()
+    {
+        if (intensity01 > 0.001f) SetNormalized(0f);
+        else SetNormalized(Mathf.Max(lastOn, minRestoreIntensity));
+    }
 
     [ContextMenu("Test Toggle")]
     private void TestToggle() => Toggle();
