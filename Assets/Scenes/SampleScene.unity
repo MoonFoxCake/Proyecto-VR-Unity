@@ -23601,63 +23601,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1001 &555655582
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 68.2513
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.38709
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -16.80337
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_Name
-      value: XR Device Simulator
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
 --- !u!1 &557148382
 GameObject:
   m_ObjectHideFlags: 0
@@ -105898,7 +105841,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -136254,7 +136197,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -150094,6 +150037,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Paredes
       objectReference: {fileID: 0}
+    - target: {fileID: 4607807576476454211, guid: a21c5a1401842664e9371840c897e098, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5534009039971506832, guid: a21c5a1401842664e9371840c897e098, type: 3}
       propertyPath: m_TagString
       value: Paredes
@@ -160880,7 +160827,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -168753,7 +168700,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -174225,7 +174172,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -178416,7 +178363,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428390311034220094}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f825522d40b65042a8f215f87be2dc3, type: 3}
   m_Name: 
@@ -180833,7 +180780,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -187330,7 +187277,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -188016,7 +187963,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -192767,7 +192714,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -193240,4 +193187,3 @@ SceneRoots:
   - {fileID: 1092811358}
   - {fileID: 2140778652}
   - {fileID: 286943378}
-  - {fileID: 555655582}
