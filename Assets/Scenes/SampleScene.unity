@@ -31166,7 +31166,19 @@ MonoBehaviour:
   altura: 10
   gotasPorSegundo: 1500
   maximoGotas: 3000
+  factorVida: 1.6
+  alturaAutomatica: 1
+  margenSobreTecho: 3
+  alturaMaxima: 40
+  intervaloMedicion: 1
   chocar: 1
+  calidadChoque: 0
+  formasDeColision: 1024
+  capasChoque:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  escalaRadio: 1.5
+  depurar: 0
 --- !u!4 &725745145
 Transform:
   m_ObjectHideFlags: 0
@@ -72293,7 +72305,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 2.5
       minScalar: 0
       maxCurve:
         serializedVersion: 2
