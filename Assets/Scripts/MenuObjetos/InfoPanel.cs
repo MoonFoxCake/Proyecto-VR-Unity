@@ -70,6 +70,13 @@ public class InfoPanel : MonoBehaviour
         var sb = new StringBuilder();
         foreach (var e in obj.characteristics)
             sb.AppendLine("<b>" + e.label + ":</b> " + e.value);
+
+        // Medidas reales calculadas de la geometría (mismo criterio que TapeMeasure).
+        if (obj.mostrarMedidas)
+        {
+            string medidas = MedidasReales.Texto(obj.transform);
+            if (medidas.Length > 0) sb.AppendLine(medidas);
+        }
         characteristicsText.text = sb.ToString();
 
         ComputePlacement(out Vector3 pos, out float factor);
@@ -146,7 +153,7 @@ public class InfoPanel : MonoBehaviour
 
         // Tamaño del panel en metros, y ejes para ubicar sus esquinas.
         var rt = transform as RectTransform;
-        Vector2 size = (rt != null ? rt.rect.size : new Vector2(600f, 400f)) * scale;
+        Vector2 size = (rt != null ? rt.rect.size : new Vector2(600f, 480f)) * scale;
         Quaternion face = Quaternion.LookRotation(flat);
         Vector3 halfRight = face * Vector3.right * (size.x * 0.5f);
         Vector3 halfUp = Vector3.up * (size.y * 0.5f);
@@ -202,7 +209,7 @@ public class InfoPanel : MonoBehaviour
         var canvas = gameObject.GetComponent<Canvas>();
         if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.WorldSpace;
-        ((RectTransform)transform).sizeDelta = new Vector2(600f, 400f);
+        ((RectTransform)transform).sizeDelta = new Vector2(600f, 480f);
 
         var bg = new GameObject("Panel", typeof(RectTransform));
         bg.transform.SetParent(transform, false);

@@ -24,6 +24,10 @@ public class InspectableObject : MonoBehaviour
     [TextArea(2, 8)] public string description;
     public List<InfoEntry> characteristics = new List<InfoEntry>();
 
+    [Header("Medidas")]
+    [Tooltip("Agrega al panel largo, ancho y alto reales del objeto, calculados de su geometría (igual que el medidor).")]
+    public bool mostrarMedidas = true;
+
     [Header("Brillo al apuntar")]
     [ColorUsage(false, true)] public Color glowColor = new Color(0.2f, 0.7f, 1f);
     public float glowIntensity = 1.5f;

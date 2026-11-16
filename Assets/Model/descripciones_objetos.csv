@@ -1,0 +1,57 @@
+# Separador de columnas: punto y coma (;). Separador de caracteristicas: | y dentro de cada una  Etiqueta:Valor
+# El patron se busca dentro del nombre del objeto (sin importar mayusculas ni tildes). Gana la PRIMERA linea que coincida, por eso las mas especificas van antes.
+# MEDIDAS: NO se escriben aqui. El panel las calcula solo de la geometria de cada objeto (largo, ancho y alto reales, igual que el medidor; en una maqueta, tambien la medida de la maqueta).
+# Aqui solo van especificaciones (tipo de bloque, material, marca).
+# Los datos salen de los nombres del modelo. Revisa los marcados en la respuesta antes de usarlos con publico.
+patron;titulo;descripcion;caracteristicas
+Muro basico Bloque primer nivel;Muro de bloque - primer nivel;Muro de bloque del modelo correspondiente al tipo "primer nivel".;Tipo:Muro básico de bloque|Bloque (tipo):15 x 20 x 40 cm|Nivel:Primer nivel
+Muro basico Bloque segundo nivel;Muro de bloque - segundo nivel;Muro de bloque del modelo correspondiente al tipo "segundo nivel".;Tipo:Muro básico de bloque|Bloque (tipo):12 x 20 x 40 cm|Nivel:Segundo nivel
+Muro basico Tapia Principal;Muro de cerramiento (tapia);Muro perimetral de cerramiento del lote.;Tipo:Muro básico - Tapia principal
+Puerta_oak_lever_handle;Puerta interior de roble;Puerta interior de madera de roble con manija de palanca.;Material:Roble|Uso:Interior
+Puerta_Aluprof;Puerta de aluminio Aluprof;Puerta de aluminio de una hoja con apertura hacia afuera, de la serie MB-79N de Aluprof.;Fabricante:Aluprof|Serie:MB-79N-SI|Tipo:Una hoja, apertura hacia afuera
+horizontal_sliding_window;Ventana corrediza horizontal;Ventana de hojas corredizas en sentido horizontal.;Tipo:Corrediza horizontal
+Ventana_white_aluminum_sliding_window;Ventana corrediza de aluminio;Ventana corrediza con marco de aluminio blanco y dos hojas móviles.;Material:Aluminio blanco|Tipo:Corrediza
+PorteVitree;Puerta vidriada;Puerta con panel de vidrio.;Tipo:Puerta vidriada
+Porton_NBS;Portón de cerramiento;Portón de dos hojas del sistema de cerramiento Lockmaster de CLD Fencing Systems.;Fabricante:CLD Fencing Systems|Modelo:Lockmaster|Hojas:2
+Portao;Portón;Portón de acceso del cerramiento.;Tipo:Portón
+Barandilla Barrotes redondos;Barandilla de barrotes redondos;Barandilla compuesta por barrotes de sección redonda.;Barrotes:Redondos
+Barandilla Barrotes cuadrados;Barandilla de barrotes cuadrados;Barandilla compuesta por barrotes de sección cuadrada.;Barrotes:Cuadrados
+Tipo de barandal superior;Pasamanos de acero;Pasamanos superior de la barandilla, de acero y sección circular.;Material:Acero|Sección:Circular de 50 mm
+Pilar rectangular 40 x 40;Pilar rectangular;Pilar estructural de sección rectangular.;Tipo:Pilar estructural
+Pilar rectangular 30 x 30;Pilar rectangular;Pilar estructural de sección rectangular.;Tipo:Pilar estructural
+Cubierta basica;Cubierta;Cubierta (techo) de la edificación.;Tipo:Cubierta básica
+Techo compuesto Cielos;Cielo raso de gypsum;Cielo raso (techo interior) de gypsum.;Material:Gypsum
+Suelo Porcelanato;Piso de porcelanato;Piso de porcelanato de las áreas interiores.;Material:Porcelanato
+Suelo Acera;Acera;Acera exterior.;Tipo:Acera exterior
+Suelo Pavimento;Pavimento;Pavimento exterior.;Tipo:Pavimento exterior
+Solido topografico Pastizales;Terreno con pasto;Superficie de terreno con vegetación de pasto.;Tipo:Sólido topográfico - Pastizales
+Escalera moldeada;Escalera moldeada in situ;Escalera fundida directamente en obra.;Tipo:Moldeada in situ
+Tramo monolitico;Tramo de escalera monolítico;Tramo de escalera construido como una sola pieza.;Huella:40 mm|Mamperlán:30 mm
+Plaza de aparcamiento;Plaza de estacionamiento;Plaza de estacionamiento para vehículos.;Ángulo:90°
+Farola;Farola de alumbrado público;Poste de alumbrado público.;Tipo:Alumbrado público
+Blocks_Jardinera;Jardinera de hormigón;Jardinera de hormigón para plantas.;Material:Hormigón
+compact_kitchen;Cocina compacta;Cocina compacta con los elementos básicos en un solo conjunto.;Tipo:Cocina compacta
+Refrigerator_built-in;Refrigerador side by side;Refrigerador empotrado de dos puertas (side by side) en acero inoxidable.;Material:Acero inoxidable|Tipo:Side by side, empotrado
+Dishwasher;Lavavajillas;Lavavajillas de uso doméstico.;Tipo:Electrodoméstico
+Fregadero armario;Fregadero de cocina;Fregadero cuadrado integrado al mueble de cocina.;Forma:Cuadrado
+Retrete;Inodoro;Inodoro doméstico.;Tipo:Sanitario
+Compartimento de ducha;Cabina de ducha de esquina;Cabina de ducha instalada en esquina.;Tipo:Esquina
+Tocador 2;Tocador;Mueble tocador del baño.;Tipo:Mueble de baño
+Silla-Oficina;Silla de oficina;Silla de oficina.;Tipo:Mobiliario
+Mikael_Pcdesk-1 PretoCastanho;Escritorio IKEA Mikael;Escritorio para computador de la línea Mikael de IKEA.;Marca:IKEA|Modelo:Mikael|Acabado:Preto castanho
+Mikael_Pcdesk-1 Betula;Escritorio IKEA Mikael;Escritorio para computador de la línea Mikael de IKEA.;Marca:IKEA|Modelo:Mikael|Acabado:Abedul
+Expedit_Shelv;Estantería IKEA Expedit;Estantería modular de la línea Expedit de IKEA.;Marca:IKEA|Modelo:Expedit|Acabado:Abedul
+Coffee Table;Mesa de centro rectangular;Mesa de centro de forma rectangular.;Marca:IKEA|Forma:Rectangular
+Kilppan;Sofá IKEA Kilppan de 2 plazas;Sofá de dos plazas de la línea Kilppan de IKEA.;Marca:IKEA|Modelo:Kilppan|Plazas:2|Tapizado:Cuero negro
+Double bed;Cama doble;Cama de matrimonio.;Tipo:Cama doble
+Bed03;Cama;Cama de habitación.;Tipo:Cama
+archiclassic;Mobiliario Archiclassic;Elemento de mobiliario de la colección Archiclassic.;Colección:Archiclassic
+MS-TV-02;Mueble de TV;Mueble para televisor.;Tipo:Mueble para televisor
+BIMLib 55;Televisor LED de 55 pulgadas;Televisor LED montado en la pared.;Pantalla:55 pulgadas|Montaje:Soporte de pared
+BIMLib 42;Televisor LED de unas 49 pulgadas;Televisor LED montado en la pared.;Pantalla:Aprox. 49 pulgadas|Montaje:Soporte de pared
+Lampara Habitacion Secundaria;Lámpara de habitación secundaria;Luminaria de la habitación secundaria.;Ubicación:Habitación secundaria
+Lampara Habitacion;Lámpara de habitación;Luminaria de la habitación principal.;Ubicación:Habitación
+Lampara Sala;Lámpara de sala;Luminaria de la sala.;Ubicación:Sala
+Lampara Cocina;Lámpara de cocina;Luminaria de la cocina.;Ubicación:Cocina
+Lampara Bano;Lámpara de baño;Luminaria del baño.;Ubicación:Baño
+Lampara Secadora;Lámpara de secadora;Luminaria de la zona de la secadora.;Ubicación:Zona de secadora
