@@ -23601,6 +23601,63 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1001 &555655582
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 68.2513
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.38709
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -16.80337
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_Name
+      value: XR Device Simulator
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
 --- !u!1 &557148382
 GameObject:
   m_ObjectHideFlags: 0
@@ -106102,7 +106159,6 @@ GameObject:
   - component: {fileID: 5983186733894383764}
   - component: {fileID: 8001255164549019680}
   - component: {fileID: 8251753040280326571}
-  - component: {fileID: 8251753040280326572}
   m_Layer: 0
   m_Name: 'Escalera moldeada in situ Escalera [213877]'
   m_TagString: Untagged
@@ -113032,7 +113088,6 @@ GameObject:
   - component: {fileID: 1968578714551638201}
   - component: {fileID: 8426689157210876402}
   - component: {fileID: 1543819036908611113}
-  - component: {fileID: 8426689157210876403}
   m_Layer: 0
   m_Name: 'Escalera moldeada in situ Escalera [214528]'
   m_TagString: Untagged
@@ -130849,7 +130904,6 @@ GameObject:
   - component: {fileID: 2283780210977289548}
   - component: {fileID: 457752655285928260}
   - component: {fileID: 2393290098115048881}
-  - component: {fileID: 3705656294654555555}
   m_Layer: 0
   m_Name: 'Escalera moldeada in situ Escalera [205196]'
   m_TagString: Untagged
@@ -130857,41 +130911,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3705656294654555555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3705656294654555554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f825522d40b65042a8f215f87be2dc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InspectableObject
-  title: Escalera moldeada in situ
-  description: Escalera fundida directamente en obra.
-  characteristics:
-  - label: Tipo
-    value: Moldeada in situ
-  mostrarMedidas: 1
-  glowColor: {r: 0.2, g: 0.7, b: 1, a: 1}
-  glowIntensity: 1.5
-  pulseSpeed: 3
-  pulseDepth: 0.4
-  addColliderIfMissing: 0
-  onHoverEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverExit:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoShown:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoHidden:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!23 &3706098050453142319
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -150905,7 +150924,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -159777,7 +159796,6 @@ GameObject:
   - component: {fileID: 4454438820304495207}
   - component: {fileID: 8335700959668489881}
   - component: {fileID: 4787771031686118500}
-  - component: {fileID: 8335700959668489882}
   m_Layer: 0
   m_Name: 'Escalera moldeada in situ Escalera [214139]'
   m_TagString: Untagged
@@ -166239,7 +166257,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -169221,7 +169239,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -179465,41 +179483,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8251753040280326572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955966666873917514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f825522d40b65042a8f215f87be2dc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InspectableObject
-  title: Escalera moldeada in situ
-  description: Escalera fundida directamente en obra.
-  characteristics:
-  - label: Tipo
-    value: Moldeada in situ
-  mostrarMedidas: 1
-  glowColor: {r: 0.2, g: 0.7, b: 1, a: 1}
-  glowIntensity: 1.5
-  pulseSpeed: 3
-  pulseDepth: 0.4
-  addColliderIfMissing: 0
-  onHoverEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverExit:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoShown:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoHidden:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &8256403108365709479
 Transform:
   m_ObjectHideFlags: 0
@@ -180506,41 +180489,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6638758085768948348}
   m_Mesh: {fileID: -9120032667854865169, guid: b297180d09d214f9ebbe7a0011a3fc5e, type: 3}
---- !u!114 &8335700959668489882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6638758085768948348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f825522d40b65042a8f215f87be2dc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InspectableObject
-  title: Escalera moldeada in situ
-  description: Escalera fundida directamente en obra.
-  characteristics:
-  - label: Tipo
-    value: Moldeada in situ
-  mostrarMedidas: 1
-  glowColor: {r: 0.2, g: 0.7, b: 1, a: 1}
-  glowIntensity: 1.5
-  pulseSpeed: 3
-  pulseDepth: 0.4
-  addColliderIfMissing: 0
-  onHoverEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverExit:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoShown:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoHidden:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!33 &8337665393971423089
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -181716,41 +181664,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773440496930079624}
   m_Mesh: {fileID: 6851801534404666413, guid: b297180d09d214f9ebbe7a0011a3fc5e, type: 3}
---- !u!114 &8426689157210876403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773440496930079624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f825522d40b65042a8f215f87be2dc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InspectableObject
-  title: Escalera moldeada in situ
-  description: Escalera fundida directamente en obra.
-  characteristics:
-  - label: Tipo
-    value: Moldeada in situ
-  mostrarMedidas: 1
-  glowColor: {r: 0.2, g: 0.7, b: 1, a: 1}
-  glowIntensity: 1.5
-  pulseSpeed: 3
-  pulseDepth: 0.4
-  addColliderIfMissing: 0
-  onHoverEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverExit:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoShown:
-    m_PersistentCalls:
-      m_Calls: []
-  onInfoHidden:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &8427075672441782867
 Transform:
   m_ObjectHideFlags: 0
@@ -186444,7 +186357,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -193327,3 +193240,4 @@ SceneRoots:
   - {fileID: 1092811358}
   - {fileID: 2140778652}
   - {fileID: 286943378}
+  - {fileID: 555655582}
