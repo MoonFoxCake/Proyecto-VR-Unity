@@ -5450,7 +5450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lamp
   lampLight: {fileID: 1643412467}
-  maxIntensity: 10
+  maxIntensity: 30
   intensity01: 0
   minRestoreIntensity: 0.3
 --- !u!135 &139682753
@@ -8095,8 +8095,8 @@ Light:
   m_Color: {r: 1, g: 0.94311583, b: 0.6933962, a: 1}
   m_Intensity: 0
   m_Range: 3
-  m_SpotAngle: 88.894585
-  m_InnerSpotAngle: 24.942621
+  m_SpotAngle: 179
+  m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
     m_Type: 1
@@ -18824,7 +18824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lamp
   lampLight: {fileID: 2127331038}
-  maxIntensity: 10
+  maxIntensity: 20
   intensity01: 0
   minRestoreIntensity: 0.3
 --- !u!135 &432634575
@@ -25709,8 +25709,8 @@ Light:
   m_Color: {r: 1, g: 0.94311583, b: 0.6933962, a: 1}
   m_Intensity: 0
   m_Range: 3
-  m_SpotAngle: 170.85245
-  m_InnerSpotAngle: 21.80208
+  m_SpotAngle: 160.58195
+  m_InnerSpotAngle: 23.269293
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
     m_Type: 1
@@ -33511,7 +33511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lamp
   lampLight: {fileID: 1572740526}
-  maxIntensity: 10
+  maxIntensity: 20
   intensity01: 0
   minRestoreIntensity: 0.3
 --- !u!135 &770769730
@@ -41262,7 +41262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lamp
   lampLight: {fileID: 959105758}
-  maxIntensity: 10
+  maxIntensity: 15
   intensity01: 0
   minRestoreIntensity: 0.3
 --- !u!135 &950790436
@@ -46102,7 +46102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lamp
   lampLight: {fileID: 1661111831}
-  maxIntensity: 10
+  maxIntensity: 30
   intensity01: 0
   minRestoreIntensity: 0.3
 --- !u!135 &1051194622
@@ -72293,7 +72293,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -73173,7 +73173,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 1
+    enabled: 0
     x:
       serializedVersion: 2
       minMaxState: 3
@@ -78311,7 +78311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lamp
   lampLight: {fileID: 1901735848}
-  maxIntensity: 10
+  maxIntensity: 20
   intensity01: 0
   minRestoreIntensity: 0.3
 --- !u!135 &1722327341
@@ -91672,7 +91672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lamp
   lampLight: {fileID: 191550814}
-  maxIntensity: 15
+  maxIntensity: 30
   intensity01: 0
   minRestoreIntensity: 0.3
 --- !u!135 &2040098007
@@ -94382,7 +94382,7 @@ Light:
   m_Color: {r: 1, g: 0.94311583, b: 0.6933962, a: 1}
   m_Intensity: 0
   m_Range: 3
-  m_SpotAngle: 170.85245
+  m_SpotAngle: 151.77867
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
