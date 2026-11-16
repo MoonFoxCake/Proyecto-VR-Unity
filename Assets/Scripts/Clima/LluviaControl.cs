@@ -107,11 +107,11 @@ public class LluviaControl : MonoBehaviour
         {
             col.type = ParticleSystemCollisionType.World;
             col.mode = ParticleSystemCollisionMode.Collision3D;
-            col.quality = ParticleSystemCollisionQuality.Medium; // mas barato que High; suficiente para lluvia
+            col.quality = ParticleSystemCollisionQuality.High; // mas barato que High; suficiente para lluvia
             col.lifetimeLoss = 1f;                                 // la gota muere al chocar
             col.bounce = 0f;
             col.sendCollisionMessages = false;
-        }
+            col.maxCollisionShapes = 1024;        }
     }
 
     // La caida viene del modulo "Velocity over Lifetime" (o de la velocidad inicial).
