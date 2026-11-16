@@ -132647,7 +132647,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -140874,7 +140874,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -145804,7 +145804,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -149209,7 +149209,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -151554,7 +151554,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -172775,7 +172775,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -176315,7 +176315,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
