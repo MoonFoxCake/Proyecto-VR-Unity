@@ -14582,7 +14582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 350715451}
   m_Layer: 0
-  m_Name: Luces_Piso 4_1
+  m_Name: Luces_Piso 2_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17061,7 +17061,7 @@ GameObject:
   m_Component:
   - component: {fileID: 398492368}
   m_Layer: 0
-  m_Name: Luces_Piso 4_2
+  m_Name: Luces_Piso 3_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51625,7 +51625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1171549695}
   m_Layer: 0
-  m_Name: Luces_Piso 4_1
+  m_Name: Luces_Piso 1_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53605,7 +53605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1218654620}
   m_Layer: 0
-  m_Name: Luces_Piso 4_2
+  m_Name: Luces_Piso 2_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78703,7 +78703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1710649767}
   m_Layer: 0
-  m_Name: Luces_Piso 4_2
+  m_Name: Luces_Piso 1_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92324,7 +92324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2034753963}
   m_Layer: 0
-  m_Name: Luces_Piso 4_1
+  m_Name: Luces_Piso 3_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157001,7 +157001,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -161683,7 +161683,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -175524,7 +175524,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -177864,7 +177864,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -178325,7 +178325,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -180303,7 +180303,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -185612,7 +185612,7 @@ MonoBehaviour:
   glowIntensity: 1.5
   pulseSpeed: 3
   pulseDepth: 0.4
-  addColliderIfMissing: 1
+  addColliderIfMissing: 0
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
